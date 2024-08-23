@@ -50,13 +50,13 @@ INSTALLED_APPS = [
 
     #라이브러리 
 
-'rest_framework.authtoken',
-'dj_rest_auth',
-'django.contrib.sites',
-'allauth',
-'allauth.account',
-'allauth.socialaccount',
-'dj_rest_auth.registration',
+    'rest_framework.authtoken',
+    'dj_rest_auth',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'dj_rest_auth.registration',
 
 
 
@@ -92,6 +92,14 @@ TEMPLATES = [
         },
     },
 ]
+
+# email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'greatlion0823@naver.com'  # 발신자 이메일 주소
+EMAIL_HOST_PASSWORD = 'likelion1234!'  # 발신자 이메일 비밀번호
 
 WSGI_APPLICATION = 'dearProfessor_back.wsgi.application'
 
