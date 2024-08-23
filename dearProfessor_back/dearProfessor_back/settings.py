@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-pfu))9&1!^3_0w$#@xetl!u6^(0$gj!00ez1wzs%@*1gdfd5sh
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 AUTH_USER_MODEL = 'accounts.User'
 
 # Application definition
@@ -72,7 +72,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
  #추가
+    'corsheaders.middleware.CorsMiddleware',
 
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
 ]
 
 ROOT_URLCONF = 'dearProfessor_back.urls'

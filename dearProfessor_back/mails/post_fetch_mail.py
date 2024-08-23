@@ -155,4 +155,4 @@ def fetch_emails(sender, since_date):
 receiver = "hybyun0207@gmail.com"
 subject = "시험 메일"
 body = "시험 메일입니다!!!"
-post_emails(receiver, subject, body)
+# post_emails(receiver, subject, body)
