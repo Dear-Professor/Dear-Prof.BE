@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import SentMailViewset, MailViewset
+from .views import SentMailViewset, MailViewset, MailViewsetOptions
 
 # Router 설정
 router = DefaultRouter()
@@ -14,10 +14,17 @@ Mail_urls = MailViewset.as_view({
     }
 )
 
+Mail_option_urls = MailViewsetOptions.as_view({
+        'post' : 'create',
+        'get' : 'retrieve',
+        'put' : 'update'
+    }
+)
 
 
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('mail/', Mail_urls),
+    path('typeAll/', Mail_urls),
+    path('selectOptions/', Mail_option_urls),
 ]

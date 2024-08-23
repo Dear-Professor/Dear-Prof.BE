@@ -2,7 +2,7 @@ import os
 import openai
 from dotenv import load_dotenv
 
-def useGPT() :
+def useGPT(content) :
 
     # .env 파일 활성화
     load_dotenv()
@@ -17,7 +17,7 @@ def useGPT() :
         messages=[
             {
                 "role": "user",
-                "content": "Say this is a test",
+                "content": content,
             }
         ],
     )
@@ -25,4 +25,6 @@ def useGPT() :
     # 응답 출력
     print(response)
     print(response['choices'][0]['message']['content'])
+
+    return response['choices'][0]['message']['content']
 
