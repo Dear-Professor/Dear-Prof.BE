@@ -9,26 +9,59 @@ from rest_framework.viewsets import ModelViewSet
 from . serializers import *
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
-
+from .models import SentEmail
+from .chatGPT_api import useGPT
+from .post_fetch_mail import *
 
 from django.shortcuts import get_object_or_404
 
+
     
-# 메일 보내기. 
-class SendEmailView(APIView):
+class MailViewset(ModelViewSet):
+    queryset = SentEmail.objects.all()
+    serializer_class = SentEmailSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
-    def post(self, request):
-        serializer = SentEmailSerializer(data=request.data)
-        if serializer.is_valid():
-            from_email = serializer.validated_data['from_email']
-            to_email = serializer.validated_data['to_email']
-            subject = serializer.validated_data['subject']
-            message = serializer.validated_data['message']
+    def perform_create(self, serializer):
+        # 모델 인스턴스를 먼저 저장하여 기본 데이터를 채웁니다.
+        instance = serializer.save()
+        
+        # 여기서 useGPT 함수를 호출하여 final_context를 생성합니다.
+        final_context = useGPT(instance.written_context)  # useGPT 함수는 정의된 함수입니다.
+        
+        # 생성된 final_context를 인스턴스에 추가하고 다시 저장합니다.
+        instance.final_context = final_context
+        instance.save()
+        
+        return instance
+    
+    def update(self, request, *args, **kwargs):
+        # 기존 인스턴스를 가져옵니다.
+        instance = self.get_object()
 
-            send_mail(subject, message, from_email, [to_email])
+        # 사용자가 final_context만 수정할 수 있도록 제한합니다.
+        partial = kwargs.pop('partial', False)
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        
+        # final_context만 변경된 내용으로 업데이트합니다.
+        if 'final_context' in serializer.validated_data:
+            instance.final_context = serializer.validated_data['final_context']
+            instance.save()
 
-            return Response({"message": "Email sent successfully"}, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        post_emails(instance.to_user, instance.title, instance.final_context)
+
+        # 성공적인 응답을 반환합니다.
+        return Response(serializer.data)
+
+    def retrieve(self, request, *args, **kwargs):
+        # 특정 SentEmail 인스턴스를 가져옵니다.
+        instance = self.get_object()
+        
+        # final_context만 반환합니다.
+        return Response({"final_context": instance.final_context})
+
 
 
 #보낸 메일 리스트/상세 조회
