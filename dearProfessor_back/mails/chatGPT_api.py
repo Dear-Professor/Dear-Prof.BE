@@ -13,13 +13,14 @@ def useGPT(content) :
 
     # ChatGPT 모델에 요청 보내기
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",  # 사용할 모델 선택
+        model="gpt-4", # 사용할 모델 선택
         messages=[
-            {
-                "role": "user",
-                "content": content,
-            }
-        ],
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": content}
+            ],
+        max_tokens=500,  # 필요한 토큰 수에 따라 조정
+        temperature=0.7,  # 창의적인 응답을 위한 온도 설정
+        
     )
 
     # 응답 출력

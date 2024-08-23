@@ -118,14 +118,15 @@ class MailViewsetOptions(ModelViewSet):
 
     def perform_create(self, serializer):
 
-        # 모델 인스턴스를 먼저 저장하여 기본 데이터를 채웁니다.
-        instance = serializer.save(user=self.request.user)
-        
         # 먼저 유효성 검사를 통과한 데이터를 가져옵니다.
         validated_data = serializer.validated_data
 
+        # 모델 인스턴스를 먼저 저장하여 기본 데이터를 채웁니다.
+        instance = serializer.save(user=self.request.user)
+        
         prof_email = self.request.data.get('prof_email')
         validated_data['to_user'] = prof_email
+        instance.to_user = prof_email
 
         subject = self.request.data.get('subject')
         purpose = self.request.data.get('purpose')
