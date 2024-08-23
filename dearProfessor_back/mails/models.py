@@ -5,7 +5,7 @@ class SentEmail(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='sent_email')
     title = models.CharField
-    final_context = models.TextField()
+    final_context = models.TextField() # feedback , 
     written_context = models.TextField()
     to_user = models.EmailField() # 교수님 메일
     created_at = models.DateTimeField()

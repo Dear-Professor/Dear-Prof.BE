@@ -5,11 +5,7 @@ from .models import *
 class SentEmailSerializer(serializers.Serializer):
     name = serializers.ReadOnlyField(source = 'user.name')
     from_email = serializers.ReadOnlyField(source = 'user.email')
-    grade = serializers.ReadOnlyField(source = 'user.grade')
-    studentId = serializers.ReadOnlyField(source = 'user.studentId')
-    major = serializers.ReadOnlyField(source = 'user.major')
-    school = serializers.ReadOnlyField(source = 'user.school')
-
+   
     class Meta:
         model = SentEmail
         fields = ['id','user','name','from_email','grade','studentId','major','school',
@@ -21,3 +17,10 @@ class ReceivedEmailSerializer(serializers.Serializer):
     class Meta:
         model = SentEmail
         fields = ['response_to','id','user','title','context','from_user','created_at']
+
+
+class SentEmailViewSerializer(serializers.ModelSerializer):
+    # `user` 필드에서의 값을 직접 가져오는 것이 아니라, `SentEmail` 모델의 필드만을 포함
+    class Meta:
+        model = SentEmail
+        fields = '__all__'
