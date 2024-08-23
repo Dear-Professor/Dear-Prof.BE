@@ -8,7 +8,7 @@ class SentEmailSerializer(serializers.Serializer):
    
     class Meta:
         model = SentEmail
-        fields = ['id','user','name','from_email','grade','studentId','major','school',
+        fields = ['id','user','name','from_email',
                   'title','written_context','final_context','to_user','created_at','is_feedback','feedback','subject']
 
 class ReceivedEmailSerializer(serializers.Serializer):
