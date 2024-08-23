@@ -28,6 +28,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)
     password = models.CharField(max_length=100)
+    
     name = models.CharField(max_length=50)
     grade = models.IntegerField(default =1)
     studentId = models.IntegerField(default = 0 )
