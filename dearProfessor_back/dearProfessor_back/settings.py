@@ -31,12 +31,22 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # 라이브러리
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'corsheaders',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # 앱
+    'accounts',
+    
+    'mails',
 ]
 
 MIDDLEWARE = [
