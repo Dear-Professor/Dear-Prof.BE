@@ -15,6 +15,7 @@ from .post_fetch_mail import *
 
 from django.shortcuts import get_object_or_404
 
+
     
 class MailViewset(ModelViewSet):
     queryset = SentEmail.objects.all()
