@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-
+from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-pfu))9&1!^3_0w$#@xetl!u6^(0$gj!00ez1wzs%@*1gdfd5sh
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+AUTH_USER_MODEL = 'accounts.User'
 
 # Application definition
 
@@ -47,6 +47,19 @@ INSTALLED_APPS = [
     'accounts',
     
     'mails',
+
+    #라이브러리 
+
+'rest_framework.authtoken',
+'dj_rest_auth',
+'django.contrib.sites',
+'allauth',
+'allauth.account',
+'allauth.socialaccount',
+'dj_rest_auth.registration',
+
+
+
 ]
 
 MIDDLEWARE = [
@@ -57,6 +70,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
+ #추가
+
 ]
 
 ROOT_URLCONF = 'dearProfessor_back.urls'
@@ -131,3 +147,32 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_AUTH = {
+    'USE_JWT': True,
+    'JWT_AUTH_HTTPONLY': False,
+    'JWT_AUTH_COOKIE' : 'access',
+    'JWT_AUTH_REFRESH_COOKIE' : "refresh_token",
+
+}
+SITE_ID = 1
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_USERNAME_REQUIRED = False #username 필드 사용 x
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_REQUIRED = True # email 필드 사용 o
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'none' # 회원가입 과정에서 이메일 인증 x
+
+AUTHENTICATION_BACKENDS = (
+'allauth.account.auth_backends.AuthenticationBackend',
+)
+REST_FRAMEWORK = {
+'DEFAULT_AUTHENTICATION_CLASSES': (
+'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+'rest_framework_simplejwt.authentication.JWTAuthentication',
+)
+}
+SIMPLE_JWT = {
+'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+}
