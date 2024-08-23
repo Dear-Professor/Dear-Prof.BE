@@ -7,10 +7,13 @@ from rest_framework import status, viewsets, generics
 
 from . serializers import *
 
-# class SentEmailListView(viewsets.ViewSet):
+class SentEmailListView(viewsets.ViewSet):
+    queryset = SentEmail.objects.all()
+    serializer_class = SentEmailSerializer
     
 
 class SendEmailView(APIView):
+
     def post(self, request):
         serializer = SentEmailSerializer(data=request.data)
         if serializer.is_valid():
