@@ -4,13 +4,13 @@ from django.conf import settings
 class SentEmail(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='sent_email')
-    title = models.CharField
+    title = models.CharField(max_length=150)
     final_context = models.TextField() # feedback , 
     written_context = models.TextField()
     to_user = models.EmailField() # 교수님 메일
-    created_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
     is_feedback = models.BooleanField(default=False)
-    feedback = models.JSONField()
+    feedback = models.JSONField(default=dict)
     subject = models.CharField(max_length=100) # 수업 이름
 
 class ReceivedEmail(models.Model):
